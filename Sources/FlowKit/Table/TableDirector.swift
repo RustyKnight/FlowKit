@@ -404,7 +404,9 @@ public extension TableDirector {
 	// Header & Footer
 	
 	public func tableView(_ tableView: UITableView, viewForHeaderInSection sectionIdx: Int) -> UIView? {
-		guard let header = sections[sectionIdx].headerView else { return nil }
+		guard let header = sections[sectionIdx].headerView else {
+			return nil
+		}
 		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: self.registerView(header))
 		let _ = (header as? AbstractTableHeaderFooterItem)?.dispatch(.dequeue, type: .header, view: view, section: sectionIdx, table: tableView)
 		return view
