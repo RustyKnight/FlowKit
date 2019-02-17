@@ -88,7 +88,11 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 			}
 		}
 	}
-	
+
+  // This is intended to over come the issue of a row been removed before
+  // editing did end is called
+  var editingContext: [IndexPath: (ModelProtocol, TableAdaterProtocolFunctions)] = [:]
+
 	/// Set it `true` to enable cell's prefetch. You must register `prefetch` and `cancelPrefetch`
 	/// events inside enabled sections.
 	public var prefetchEnabled: Bool {
@@ -587,16 +591,22 @@ public extension TableDirector {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		adapter.dispatch(.didDeselect, context: InternalContext(model, indexPath, nil, tableView))
 	}
-	
+  
 	public func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-		let (model,adapter) = self.context(forItemAt: indexPath)
-		adapter.dispatch(.willBeginEdit, context: InternalContext(model, indexPath, nil, tableView))
+		//let (model,adapter) = self.context(forItemAt: indexPath)
+    let context = self.context(forItemAt: indexPath)
+    editingContext[indexPath] = context
+    context.1.dispatch(.willBeginEdit, context: InternalContext(context.0, indexPath, nil, tableView))
+//    adapter.dispatch(.willBeginEdit, context: InternalContext(model, indexPath, nil, tableView))
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
 		guard let index = indexPath else { return }
-		let (model,adapter) = self.context(forItemAt: index)
-		adapter.dispatch(.didEndEdit, context: InternalContext(model, indexPath!, nil, tableView))
+    guard let context = editingContext[index] else { return }
+    editingContext[index] = nil
+//    let (model,adapter) = self.context(forItemAt: index)
+//    adapter.dispatch(.didEndEdit, context: InternalContext(model, indexPath!, nil, tableView))
+    context.1.dispatch(.didEndEdit, context: InternalContext(context.0, index, nil, tableView))
 	}
 	
     public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
