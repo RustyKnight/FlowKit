@@ -118,7 +118,8 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 			switch _itemSize {
 			case .autoLayout(let estimateSize):
 				layout.estimatedItemSize = estimateSize
-				layout.itemSize = CGSize(width: 50.0, height: 50.0) // default
+        layout.itemSize = UICollectionViewFlowLayout.automaticSize
+//          CGSize(width: 50.0, height: 50.0) // default
 			case .fixed(let fixedSize):
 				layout.estimatedItemSize = .zero
 				layout.itemSize = fixedSize
