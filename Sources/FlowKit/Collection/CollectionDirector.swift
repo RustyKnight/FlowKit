@@ -464,6 +464,12 @@ public extension CollectionDirector {
 		}
 		return offset
 	}
+  
+  public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    let (model,adapter) = self.context(forItemAt: sourceIndexPath)
+    let context = InternalContext.init(model, sourceIndexPath, nil, collectionView, param1: destinationIndexPath)
+    adapter.dispatch(.move, context: context)
+  }
 	
 	public func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
 		let (model,adapter) = self.context(forItemAt: indexPath)

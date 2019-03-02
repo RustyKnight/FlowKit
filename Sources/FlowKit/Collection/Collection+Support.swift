@@ -202,6 +202,7 @@ internal enum CollectionAdapterEventKey: Int {
 	case shouldSpringLoad
   
   case canMove
+  case move
 }
 
 internal enum CollectionSectionViewEventsKey: Int {

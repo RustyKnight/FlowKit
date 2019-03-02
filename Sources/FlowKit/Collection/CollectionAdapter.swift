@@ -160,7 +160,11 @@ open class CollectionAdapter<M: ModelProtocol, C: CellProtocol>: CollectionAdapt
     case .canMove:
       guard let callback = self.on.canMove else { return nil }
       return callback(Context<M,C>(generic: context))
-
+      
+    case .move:
+      guard let callback = self.on.moveTo else { return nil }
+      guard let from = context.path, let to = context.param1 as? IndexPath else { return nil }
+      callback(from, to)
 		}
 		return nil
 	}

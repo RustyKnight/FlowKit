@@ -75,6 +75,7 @@ public extension CollectionAdapter {
 		public var shouldSpringLoad: ((EventContext) -> Bool)? = nil
     
     public var canMove: ((EventContext) -> Bool)? = nil
+    public var moveTo: ((_ souceIndexPath: IndexPath, _ destinationIndexPath: IndexPath) -> Void)? = nil
 	}
 	
 }
