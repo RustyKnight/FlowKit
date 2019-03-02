@@ -154,7 +154,11 @@ open class CollectionAdapter<M: ModelProtocol, C: CellProtocol>: CollectionAdapt
 		case .shouldDeselect:
 			guard let callback = self.on.shouldDeselect else { return nil }
 			return callback(Context<M,C>(generic: context))
-			
+      
+    case .canMove:
+      guard let callback = self.on.canMove else { return nil }
+      return callback(Context<M,C>(generic: context))
+
 		}
 		return nil
 	}

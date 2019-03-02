@@ -402,6 +402,11 @@ public extension CollectionDirector {
 			($0.value as! AbstractAdapterProtocolFunctions).dispatch(.endDisplay, context: InternalContext.init(nil, indexPath, cell, collectionView))
 		}
 	}
+  
+  public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+    let (model,adapter) = self.context(forItemAt: indexPath)
+    return ((adapter.dispatch(.canMove, context: InternalContext.init(model, indexPath, nil, collectionView)) as? Bool) ?? false)
+  }
 
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

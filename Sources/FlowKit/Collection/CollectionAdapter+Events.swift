@@ -73,6 +73,8 @@ public extension CollectionAdapter {
 		public var prefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)? = nil
 		public var cancelPrefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)? = nil
 		public var shouldSpringLoad: ((EventContext) -> Bool)? = nil
+    
+    public var canMove: ((EventContext) -> Bool)? = nil
 	}
 	
 }
