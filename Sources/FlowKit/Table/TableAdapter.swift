@@ -168,7 +168,8 @@ open class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtocol
 			
 		case .endDisplay:
 			guard let callback = self.on.endDisplay else { return nil }
-			callback((context.cell as! C), context.path!)
+			guard let cell = context.cell as? C else { return nil }
+			callback(cell, context.path!)
 			
 		case .shouldShowMenu:
 			guard let callback = self.on.shouldShowMenu else { return nil }
