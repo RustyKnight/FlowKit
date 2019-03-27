@@ -65,13 +65,13 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	/// You must configure the `dragDrop` manager if you enabled this feature.
 	/*@available(iOS 11.0, *)
 	public var dragDropEnabled: Bool {
-		set {
-			switch newValue {
-			case true: 	self.dragDrop = DragAndDropManager(manager: self)
-			case false: self.dragDrop = nil
-			}
-		}
-		get { return (self.dragDrop != nil) }
+	set {
+	switch newValue {
+	case true: 	self.dragDrop = DragAndDropManager(manager: self)
+	case false: self.dragDrop = nil
+	}
+	}
+	get { return (self.dragDrop != nil) }
 	}*/
 	
 	/// Set it to `true` to enable cell prefetching. By default is set to `false`.
@@ -95,7 +95,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 			}
 		}
 	}
-
+	
 	/// Sections of the collection
 	public private(set) var sections: [CollectionSection] = []
 	
@@ -107,7 +107,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	
 	/// Internal representation of the cell size
 	private var _itemSize: ItemSize = .default
-
+	
 	/// Define the size of the items into the cell (valid with `UICollectionViewFlowLayout` layout).
 	public var itemSize: ItemSize {
 		set {
@@ -118,8 +118,8 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 			switch _itemSize {
 			case .autoLayout(let estimateSize):
 				layout.estimatedItemSize = estimateSize
-        layout.itemSize = UICollectionViewFlowLayout.automaticSize
-//          CGSize(width: 50.0, height: 50.0) // default
+				layout.itemSize = UICollectionViewFlowLayout.automaticSize
+			//          CGSize(width: 50.0, height: 50.0) // default
 			case .fixed(let fixedSize):
 				layout.estimatedItemSize = .zero
 				layout.itemSize = fixedSize
@@ -185,7 +185,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 		
 		// Evaluate changes in sections
 		let sectionChanges = SectionChanges.fromCollectionSections(old: oldSections, new: self.sections)
-
+		
 		self.collection?.performBatchUpdates({
 			sectionChanges.applyChanges(toCollection: self.collection)
 			
@@ -345,7 +345,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 		}
 		return (item,adapter as! AbstractAdapterProtocolFunctions)
 	}
-
+	
 	internal func context(forModel model: ModelProtocol) -> AbstractAdapterProtocolFunctions {
 		let modelID = String(describing: type(of: item.self))
 		guard let adapter = self.adapters[modelID] else {
@@ -402,12 +402,12 @@ public extension CollectionDirector {
 			($0.value as! AbstractAdapterProtocolFunctions).dispatch(.endDisplay, context: InternalContext.init(nil, indexPath, cell, collectionView))
 		}
 	}
-  
-  public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-    let (model,adapter) = self.context(forItemAt: indexPath)
-    return ((adapter.dispatch(.canMove, context: InternalContext.init(model, indexPath, nil, collectionView)) as? Bool) ?? false)
-  }
-
+	
+	public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+		let (model,adapter) = self.context(forItemAt: indexPath)
+		return ((adapter.dispatch(.canMove, context: InternalContext.init(model, indexPath, nil, collectionView)) as? Bool) ?? false)
+	}
+	
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let (model,adapter) = self.context(forItemAt: indexPath)
@@ -464,12 +464,12 @@ public extension CollectionDirector {
 		}
 		return offset
 	}
-  
-  public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    let (model,adapter) = self.context(forItemAt: sourceIndexPath)
-    let context = InternalContext.init(model, sourceIndexPath, nil, collectionView, param1: destinationIndexPath)
-    adapter.dispatch(.move, context: context)
-  }
+	
+	public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+		let (model,adapter) = self.context(forItemAt: sourceIndexPath)
+		let context = InternalContext.init(model, sourceIndexPath, nil, collectionView, param1: destinationIndexPath)
+		adapter.dispatch(.move, context: context)
+	}
 	
 	public func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
 		let (model,adapter) = self.context(forItemAt: indexPath)
@@ -497,7 +497,7 @@ public extension CollectionDirector {
 		return ((adapter.dispatch(.shouldSpringLoad, context: InternalContext.init(model, indexPath, nil, collectionView)) as? Bool) ?? true)
 	}
 	
-    @available(iOS 9.0, *)
+	@available(iOS 9.0, *)
 	public func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
 		guard let update = self.on.shouldUpdateFocus?(context) else {
 			return true
@@ -505,7 +505,7 @@ public extension CollectionDirector {
 		return update
 	}
 	
-    @available(iOS 9.0, *)
+	@available(iOS 9.0, *)
 	public func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
 		self.on.didUpdateFocus?(context,coordinator)
 	}
@@ -516,11 +516,11 @@ public extension CollectionDirector {
 		var identifier: String!
 		
 		switch kind {
-        case UICollectionView.elementKindSectionHeader:
+		case UICollectionView.elementKindSectionHeader:
 			guard let header = section.header else { return UICollectionReusableView() }
 			identifier = self.reusableRegister.registerHeaderFooter(header, type: kind)
 			
-        case UICollectionView.elementKindSectionFooter:
+		case UICollectionView.elementKindSectionFooter:
 			guard let footer = section.footer else { return UICollectionReusableView() }
 			identifier = self.reusableRegister.registerHeaderFooter(footer, type: kind)
 			
@@ -529,18 +529,18 @@ public extension CollectionDirector {
 		}
 		
 		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier, for: indexPath)
-	
+		
 		return view
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
 		
 		switch elementKind {
-        case UICollectionView.elementKindSectionHeader:
+		case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
 			let _ = header?.dispatch(.willDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.willDisplayHeader?( (view,indexPath,collectionView) )
-        case UICollectionView.elementKindSectionFooter:
+		case UICollectionView.elementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
 			let _ = footer?.dispatch(.willDisplay, type: .footer, view: view, section: indexPath.section, collection: collectionView)
 			self.on.willDisplayFooter?( (view,indexPath,collectionView) )
@@ -553,11 +553,12 @@ public extension CollectionDirector {
 	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
 		
 		switch elementKind {
-        case UICollectionView.elementKindSectionHeader:
+		case UICollectionView.elementKindSectionHeader:
+			guard !sections.isEmpty && indexPath.section < sections.count else { return }
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
 			let _ = header?.dispatch(.endDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayHeader?( (view,indexPath,collectionView) )
-        case UICollectionView.elementKindSectionFooter:
+		case UICollectionView.elementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
 			let _ = footer?.dispatch(.endDisplay, type: .footer, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayFooter?( (view,indexPath,collectionView) )
@@ -711,8 +712,8 @@ public extension CollectionDirector {
 		@discardableResult
 		internal func registerHeaderFooter(_ headerFooter: CollectionSectionProtocol, type: String) -> String {
 			let identifier = headerFooter.reuseIdentifier
-            if 	(type == UICollectionView.elementKindSectionHeader && self.headerIDs.contains(identifier)) ||
-                (type == UICollectionView.elementKindSectionFooter && self.footerIDs.contains(identifier)) {
+			if 	(type == UICollectionView.elementKindSectionHeader && self.headerIDs.contains(identifier)) ||
+				(type == UICollectionView.elementKindSectionFooter && self.footerIDs.contains(identifier)) {
 				return identifier
 			}
 			
