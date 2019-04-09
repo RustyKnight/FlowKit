@@ -126,7 +126,10 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 			}
 			return size
 		case .autoLayout(let est):
-			return est
+			guard let size = adapter.dispatch(.itemSize, context: InternalContext(model, indexPath, nil, collectionView)) as? CGSize else {
+				return est
+			}
+			return size
 		case .fixed(let size):
 			return size
 		}
