@@ -357,6 +357,9 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	internal func adapters(forIndexPath paths: [IndexPath]) -> [PrefetchModelsGroup] {
 		var list: [String: PrefetchModelsGroup] = [:]
 		paths.forEach { indexPath in
+			guard indexPath.section < self.sections.count else { return }
+			guard indexPath.item < self.sections[indexPath.section].models.count else { return }
+			
 			let model = self.sections[indexPath.section].models[indexPath.item]
 			let modelID = String(describing: type(of: model.self))
 			
