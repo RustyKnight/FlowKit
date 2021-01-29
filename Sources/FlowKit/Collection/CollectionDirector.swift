@@ -554,10 +554,10 @@ public extension CollectionDirector {
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-		
+		guard !sections.isEmpty && indexPath.section < sections.count else { return }
+
 		switch elementKind {
 		case UICollectionView.elementKindSectionHeader:
-			guard !sections.isEmpty && indexPath.section < sections.count else { return }
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
 			let _ = header?.dispatch(.endDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayHeader?( (view,indexPath,collectionView) )
